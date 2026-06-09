@@ -1,0 +1,4 @@
+# Copy to apps/api/.dev.vars (gitignored) for local development.
+OPENROUTER_API_KEY=sk-or-...
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+WEB_ORIGIN=http://localhost:5173

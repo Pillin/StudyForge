@@ -25,10 +25,10 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 
 - [x] T001 Create pnpm monorepo root: `package.json`, `pnpm-workspace.yaml` (apps/*, packages/*), `.gitignore` (.dev.vars, .wrangler, dist, node_modules), `tsconfig.base.json`
 - [x] T002 [P] Scaffold `packages/shared` (TS package: `src/index.ts`, build/exports) for Zod schemas + DTOs
-- [ ] T003 [P] Scaffold `apps/api` Cloudflare Worker: `apps/api/wrangler.jsonc` (D1 binding, vars), `apps/api/src/index.ts` (Hono app), `apps/api/src/env.ts` (typed Env), `apps/api/.dev.vars.example` (OPENROUTER_API_KEY, OPENROUTER_MODEL)
+- [x] T003 [P] Scaffold `apps/api` Cloudflare Worker: `apps/api/wrangler.jsonc` (D1 binding, vars), `apps/api/src/index.ts` (Hono app), `apps/api/src/env.ts` (typed Env), `apps/api/.dev.vars.example` (OPENROUTER_API_KEY, OPENROUTER_MODEL)
 - [ ] T004 [P] Scaffold `apps/web` TanStack Start Worker: `apps/web/vite.config.ts` (`@cloudflare/vite-plugin`, `viteEnvironment:{name:"ssr"}`), `apps/web/wrangler.jsonc`, app entry + root route
 - [ ] T005 [P] Configure tooling: ESLint + Prettier + root `tsconfig` references; `vitest.config.ts` with `@cloudflare/vitest-pool-workers` in `apps/api` and a plain Vitest config in `packages/shared`
-- [ ] T006 [P] Add Drizzle: `apps/api/drizzle.config.ts` + `db:migrate`/`db:generate` scripts wrapping drizzle-kit + `wrangler d1 migrations apply --local`
+- [x] T006 [P] Add Drizzle: `apps/api/drizzle.config.ts` + `db:migrate`/`db:generate` scripts wrapping drizzle-kit + `wrangler d1 migrations apply --local`
 
 **Checkpoint**: `pnpm install` clean; both Workers boot with a health route; shared package imports resolve.
 
@@ -48,26 +48,26 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 - [x] T011 [P] Unit test schema validation in `packages/shared/test/schemas.test.ts` (valid/invalid fixtures; time_distribution sum rule)
 
 ### Database (D1 + Drizzle)
-- [ ] T012 Define Drizzle schema in `apps/api/src/db/schema.ts` (users, sessions, courses, interview_sessions, documents) per data-model.md
-- [ ] T013 Generate initial migration into `apps/api/migrations/` and wire `db:migrate`
-- [ ] T014 [P] Implement query helpers in `apps/api/src/db/queries.ts` (latest-version lookup, owner-scoped reads)
+- [x] T012 Define Drizzle schema in `apps/api/src/db/schema.ts` (users, sessions, courses, interview_sessions, documents) per data-model.md
+- [x] T013 Generate initial migration into `apps/api/migrations/` and wire `db:migrate`
+- [x] T014 [P] Implement query helpers in `apps/api/src/db/queries.ts` (latest-version lookup, owner-scoped reads)
 
 ### Auth (port + stub)
-- [ ] T015 [P] Define `AuthPort` interface in `apps/api/src/auth/port.ts` (signup/login/logout/verify → userId)
-- [ ] T016 Implement D1 session-stub in `apps/api/src/auth/session.ts` (password hashing, cookie token) satisfying `AuthPort`
-- [ ] T017 Add auth middleware in `apps/api/src/index.ts` (attach userId; 401 when absent) and mount `routes/auth.ts`; configure CORS allowlist for the web origin in `apps/api/src/index.ts`
+- [x] T015 [P] Define `AuthPort` interface in `apps/api/src/auth/port.ts` (signup/login/logout/verify → userId)
+- [x] T016 Implement D1 session-stub in `apps/api/src/auth/session.ts` (password hashing, cookie token) satisfying `AuthPort`
+- [x] T017 Add auth middleware in `apps/api/src/index.ts` (attach userId; 401 when absent) and mount `routes/auth.ts`; configure CORS allowlist for the web origin in `apps/api/src/index.ts`
 - [ ] T018 [P] Contract test auth + ownership in `apps/api/test/auth.test.ts` (login, `/auth/me`, 404 on non-owned resource)
 
 ### Agent engine (provider seam + loop + registry)
-- [ ] T019 [P] Implement OpenRouter client in `apps/api/src/agent/openrouter.ts` (OpenAI-compatible chat completions, `stream:true`, `tools`) — the ONLY provider seam
-- [ ] T020 [P] Implement SSE helper in `apps/api/src/agent/sse.ts` (ReadableStream, `text/event-stream`, event types per contracts/sse.md)
-- [ ] T021 Author governing skill files (SKILL.md) under `apps/api/src/skills/{pedagogical-frameworks,quality-guide,time-distribution,tone-and-narrative,visual-identity}/SKILL.md`
-- [ ] T022 Implement skill registry in `apps/api/src/agent/registry.ts` (manifest: generators+governing; raw-text import of SKILL.md) and prompt assembly in `apps/api/src/agent/prompt.ts` (inject governing skills + course config)
-- [ ] T023 Implement bounded tool loop in `apps/api/src/agent/loop.ts` + dispatch in `apps/api/src/agent/tools.ts` (zod-validate args → handler; MAX_TOOL_ROUNDS; emit SSE events)
+- [x] T019 [P] Implement OpenRouter client in `apps/api/src/agent/openrouter.ts` (OpenAI-compatible chat completions, `stream:true`, `tools`) — the ONLY provider seam
+- [x] T020 [P] Implement SSE helper in `apps/api/src/agent/sse.ts` (ReadableStream, `text/event-stream`, event types per contracts/sse.md)
+- [x] T021 Author governing skill files (SKILL.md) under `apps/api/src/skills/{pedagogical-frameworks,quality-guide,time-distribution,tone-and-narrative,visual-identity}/SKILL.md`
+- [x] T022 Implement skill registry in `apps/api/src/agent/registry.ts` (manifest: generators+governing; raw-text import of SKILL.md) and prompt assembly in `apps/api/src/agent/prompt.ts` (inject governing skills + course config)
+- [x] T023 Implement bounded tool loop in `apps/api/src/agent/loop.ts` + dispatch in `apps/api/src/agent/tools.ts` (zod-validate args → handler; MAX_TOOL_ROUNDS; emit SSE events)
 
 ### Shared services
-- [ ] T024 [P] Implement quality-gate service in `apps/api/src/services/quality.ts` (structural + language + quality-guide self-check → pass | needs_review+flags)
-- [ ] T025 Implement document versioning + course readiness state machine in `apps/api/src/services/documents.ts` (new version, derive readiness, revoke-on-change) per data-model.md
+- [x] T024 [P] Implement quality-gate service in `apps/api/src/services/quality.ts` (structural + language + quality-guide self-check → pass | needs_review+flags)
+- [x] T025 Implement document versioning + course readiness state machine in `apps/api/src/services/documents.ts` (new version, derive readiness, revoke-on-change) per data-model.md
 - [ ] T026 [P] Contract test the state machine in `apps/api/test/state-machine.test.ts` (approve→ready; new version→awaiting_approval; needs_review never ready)
 
 ### Web shell
@@ -88,11 +88,11 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 - [ ] T029 [P] [US1] Contract test course create + interview SSE in `apps/api/test/us1-interview.test.ts` (vague answer → follow-up; coverage completeness; requirements persisted + validated; incl. a case with inclusion/role-model toggles OFF — Principle IX off-path)
 
 ### Implementation for US1
-- [ ] T030 [P] [US1] Author `interview` skill: `apps/api/src/skills/interview/SKILL.md` + required-topic coverage schema in `apps/api/src/skills/interview/topics.ts`
-- [ ] T031 [P] [US1] Author `course-requirements` generator skill: `apps/api/src/skills/course-requirements/SKILL.md`; register as `emit_course_requirements` tool (uses T008 schema) in registry
-- [ ] T032 [US1] Implement `routes/courses.ts`: `POST /courses` (config → draft) and `GET /courses/:id` (with readiness)
-- [ ] T033 [US1] Implement `routes/interview.ts`: `GET /courses/:id/interview` + `POST /courses/:id/interview/messages` (SSE; persist interview_session; update coverage; draft→interviewing)
-- [ ] T034 [US1] Implement `emit_course_requirements` handler — invoked from the interview-complete path (T033); validate → version via T025 → quality gate via T024
+- [x] T030 [P] [US1] Author `interview` skill: `apps/api/src/skills/interview/SKILL.md` + required-topic coverage schema in `apps/api/src/skills/interview/topics.ts`
+- [x] T031 [P] [US1] Author `course-requirements` generator skill: `apps/api/src/skills/course-requirements/SKILL.md`; register as `emit_course_requirements` tool (uses T008 schema) in registry
+- [x] T032 [US1] Implement `routes/courses.ts`: `POST /courses` (config → draft) and `GET /courses/:id` (with readiness)
+- [x] T033 [US1] Implement `routes/interview.ts`: `GET /courses/:id/interview` + `POST /courses/:id/interview/messages` (SSE; persist interview_session; update coverage; draft→interviewing)
+- [x] T034 [US1] Implement `emit_course_requirements` handler — invoked from the interview-complete path (T033); validate → version via T025 → quality gate via T024
 - [ ] T035 [P] [US1] Web: course create/config form + interview chat view in `apps/web/src/routes/courses.new.tsx` + `apps/web/src/routes/courses.$id.interview.tsx` (consume SSE)
 
 **Checkpoint**: US1 fully functional and independently testable (MVP).
@@ -109,9 +109,9 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 - [ ] T036 [P] [US2] Contract test main-plan generation in `apps/api/test/us2-mainplan.test.ts` (ordering: requires completed requirements; time_distribution sum; objectives carry Bloom)
 
 ### Implementation for US2
-- [ ] T037 [P] [US2] Author `main-plan` generator skill: `apps/api/src/skills/main-plan/SKILL.md`; register as `emit_main_plan` tool (uses T009 schema)
-- [ ] T038 [US2] Implement `routes/documents.ts` generate endpoint serving both document types (regeneration of either; first-time `main_plan`): `POST /courses/:id/documents/:type/generate` (SSE) with ordering guard (main_plan requires a complete course_requirements — FR-016)
-- [ ] T039 [US2] Implement `emit_main_plan` handler (validate incl. time-sum rule → version → quality gate)
+- [x] T037 [P] [US2] Author `main-plan` generator skill: `apps/api/src/skills/main-plan/SKILL.md`; register as `emit_main_plan` tool (uses T009 schema)
+- [x] T038 [US2] Implement `routes/documents.ts` generate endpoint serving both document types (regeneration of either; first-time `main_plan`): `POST /courses/:id/documents/:type/generate` (SSE) with ordering guard (main_plan requires a complete course_requirements — FR-016)
+- [x] T039 [US2] Implement `emit_main_plan` handler (validate incl. time-sum rule → version → quality gate)
 - [ ] T040 [P] [US2] Web: document generate + render view in `apps/web/src/routes/courses.$id.plan.tsx` (stream + show sessions/time tables)
 
 **Checkpoint**: US1 + US2 both work; requirements and main-plan both producible.
@@ -129,9 +129,9 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 - [ ] T042 [P] [US3] Contract test manual-edit validation in `apps/api/test/us3-manual-edit.test.ts` (structure-breaking PUT → 422 or needs_review; never approved — FR-017a)
 
 ### Implementation for US3
-- [ ] T043 [US3] Implement `POST /courses/:id/approve` in `routes/documents.ts` (approve latest versions of both atomically; 409 if missing/needs_review)
-- [ ] T044 [US3] Implement manual edit `PUT /courses/:id/documents/:type` (validate structure → new version origin=manual; revoke approval via T025)
-- [ ] T045 [US3] Implement guarded `POST /courses/:id/classes/generate` in `routes/classes.ts` (409 AWAITING_APPROVAL unless ready; 501 NOT_IMPLEMENTED when ready)
+- [x] T043 [US3] Implement `POST /courses/:id/approve` in `routes/documents.ts` (approve latest versions of both atomically; 409 if missing/needs_review)
+- [x] T044 [US3] Implement manual edit `PUT /courses/:id/documents/:type` (validate structure → new version origin=manual; revoke approval via T025)
+- [x] T045 [US3] Implement guarded `POST /courses/:id/classes/generate` in `routes/classes.ts` (409 AWAITING_APPROVAL unless ready; 501 NOT_IMPLEMENTED when ready)
 - [ ] T046 [P] [US3] Web: approval controls + "request changes" + edit affordance in `apps/web/src/routes/courses.$id.tsx` (readiness banner, approve button)
 
 **Checkpoint**: full plan-then-generate gate enforced end-to-end.
@@ -148,7 +148,7 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 - [ ] T047 [P] [US4] Contract test versions + ownership isolation in `apps/api/test/us4-versions.test.ts` (list versions; reopen v(n); other user gets 404)
 
 ### Implementation for US4
-- [ ] T048 [US4] Implement version endpoints in `routes/documents.ts`: `GET …/versions` + `GET …/versions/:v`; and `GET /courses` list (owner-scoped)
+- [x] T048 [US4] Implement version endpoints in `routes/documents.ts`: `GET …/versions` + `GET …/versions/:v`; and `GET /courses` list (owner-scoped)
 - [ ] T049 [P] [US4] Web: courses list + version history/viewer in `apps/web/src/routes/index.tsx` + `apps/web/src/routes/courses.$id.versions.tsx`
 - [ ] T050 [P] [US4] Web: incremental progress + error handling in the SSE reader/views (no partial-complete display)
 

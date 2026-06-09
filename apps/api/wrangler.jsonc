@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "studyforge-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "studyforge",
+      "database_id": "PLACEHOLDER-set-via-`wrangler d1 create studyforge`",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "OPENROUTER_MODEL": "anthropic/claude-3.5-sonnet",
+    "WEB_ORIGIN": "http://localhost:5173"
+  }
+  // OPENROUTER_API_KEY is a secret: `wrangler secret put OPENROUTER_API_KEY`
+}
