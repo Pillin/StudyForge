@@ -88,8 +88,9 @@ list.
 
 **Acceptance Scenarios**:
 
-1. **Given** a completed course-requirements document, **When** the educator requests the
-   plan, **Then** a main-plan is produced from it with all required sections.
+1. **Given** a complete course-requirements document (latest version not in `needs_review`),
+   **When** the educator requests the plan, **Then** a main-plan is produced from it with all
+   required sections.
 2. **Given** a generated main-plan, **When** the educator inspects it, **Then** every
    session objective uses an observable-action verb and states its Bloom level, and the
    pedagogical frameworks are applied as design structure but are not presented as content
