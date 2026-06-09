@@ -45,10 +45,16 @@ app.route("/courses", classRoutes);
 
 app.onError((err, c) => {
   if (err instanceof HttpError) {
-    return c.json({ error: { code: err.code, message: err.message, details: err.details } }, err.status as 400);
+    return c.json(
+      { error: { code: err.code, message: err.message, details: err.details } },
+      err.status as 400,
+    );
   }
   if (err instanceof ZodError) {
-    return c.json({ error: { code: "VALIDATION_FAILED", message: "Invalid input", details: err.issues } }, 422);
+    return c.json(
+      { error: { code: "VALIDATION_FAILED", message: "Invalid input", details: err.issues } },
+      422,
+    );
   }
   console.error("Unhandled error", err);
   return c.json({ error: { code: "INTERNAL", message: "Internal server error" } }, 500);

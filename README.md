@@ -6,11 +6,15 @@ requirements interview, then generates a course package through a **plan-then-ge
 workflow with an explicit approval gate. The platform is general-purpose and configurable
 (audience, language, tone, visual identity) — not tied to any single mission.
 
-> **Status: specs complete, implementation not started.** This repository currently contains
-> the full Spec-Driven Development (SDD) artifacts (constitution → spec → plan → tasks) for
-> the first slice. No application code (`apps/api`, `apps/web`) has been built yet, so there
-> is nothing to deploy until the implementation phase (`/speckit-implement`) runs. The
-> [Deployment](#deployment) section below is the ready-to-use guide for when it does.
+> **Status: first slice implemented (54/55 tasks).** The planning-backbone slice is built and
+> verified: `apps/api` (Cloudflare Worker — auth, agent engine, D1, all routes) typechecks and
+> passes 12 tests; `apps/web` (TanStack Router + Query SPA on Cloudflare) typechecks and builds.
+> The one remaining task is the live end-to-end run (`quickstart.md`), which needs a real
+> OpenRouter key + `wrangler dev` — see [Deployment](#deployment) / local development.
+>
+> Note: the frontend is a TanStack **Router + Query SPA** (served by a Cloudflare Worker via
+> static assets), a pragmatic v1 choice over TanStack **Start** (SSR); upgrading to Start later
+> is straightforward and does not affect the API.
 
 ## How it works
 

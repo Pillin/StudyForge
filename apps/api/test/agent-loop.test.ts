@@ -16,7 +16,10 @@ function fakeClient(): OpenRouter {
           {
             id: "call_1",
             type: "function",
-            function: { name: "emit_course_requirements", arguments: JSON.stringify(validRequirements) },
+            function: {
+              name: "emit_course_requirements",
+              arguments: JSON.stringify(validRequirements),
+            },
           },
         ],
         finishReason: "tool_calls",

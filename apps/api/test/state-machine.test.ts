@@ -7,7 +7,9 @@ import { persistVersion, approveCourse } from "../src/services/documents.js";
 import { signup, createCourse, validRequirements, validMainPlan } from "./helpers.js";
 
 async function readiness(d: ReturnType<typeof db>, courseId: string): Promise<string> {
-  const row = (await d.select().from(schema.courses).where(eq(schema.courses.id, courseId)).limit(1))[0];
+  const row = (
+    await d.select().from(schema.courses).where(eq(schema.courses.id, courseId)).limit(1)
+  )[0];
   return row!.readyState;
 }
 

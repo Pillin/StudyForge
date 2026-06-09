@@ -6,12 +6,7 @@ import { db, schema, getOwnedCourse, getLatestDocument } from "../db/queries.js"
 import { notFound, conflict, unprocessable } from "../http.js";
 import { generatorByName } from "../agent/registry.js";
 import type { ChatMessage } from "../agent/openrouter.js";
-import {
-  persistVersion,
-  toDocumentDTO,
-  approveCourse,
-  isComplete,
-} from "../services/documents.js";
+import { persistVersion, toDocumentDTO, approveCourse, isComplete } from "../services/documents.js";
 import { runAgentStream } from "./_run.js";
 
 const r = new Hono<AppContext>();
@@ -46,7 +41,10 @@ r.post("/:id/documents/:type/generate", async (c) => {
   if (type === "main_plan") {
     const req = await getLatestDocument(database, course.id, "course_requirements");
     if (!isComplete(req)) {
-      throw conflict("INCOMPLETE_REQUIREMENTS", "A complete course-requirements is required first.");
+      throw conflict(
+        "INCOMPLETE_REQUIREMENTS",
+        "A complete course-requirements is required first.",
+      );
     }
     history.push({
       role: "user",
@@ -59,8 +57,7 @@ r.post("/:id/documents/:type/generate", async (c) => {
     history.push({
       role: "user",
       content:
-        "Produce the course-requirements document." +
-        (guidance ? ` Guidance: ${guidance}` : ""),
+        "Produce the course-requirements document." + (guidance ? ` Guidance: ${guidance}` : ""),
     });
   }
 

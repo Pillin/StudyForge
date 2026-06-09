@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.wrangler/
+**/migrations/**
+pnpm-lock.yaml
+*.jsonc
+**/wrangler.jsonc
+.specify/
+.claude/
+specs/
+*.md

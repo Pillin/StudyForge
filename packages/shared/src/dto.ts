@@ -4,12 +4,7 @@ import { z } from "zod";
 // Enums (constitution: configurable, schema-validated)
 // ---------------------------------------------------------------------------
 
-export const ReadyState = z.enum([
-  "draft",
-  "interviewing",
-  "awaiting_approval",
-  "ready",
-]);
+export const ReadyState = z.enum(["draft", "interviewing", "awaiting_approval", "ready"]);
 export type ReadyState = z.infer<typeof ReadyState>;
 
 export const DocumentType = z.enum(["course_requirements", "main_plan"]);

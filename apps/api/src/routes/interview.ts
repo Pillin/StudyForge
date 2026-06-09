@@ -37,7 +37,11 @@ async function getOrCreateInterview(database: ReturnType<typeof db>, courseId: s
     updatedAt: now,
   });
   return (
-    await database.select().from(schema.interviewSessions).where(eq(schema.interviewSessions.id, id)).limit(1)
+    await database
+      .select()
+      .from(schema.interviewSessions)
+      .where(eq(schema.interviewSessions.id, id))
+      .limit(1)
   )[0]!;
 }
 
@@ -58,7 +62,9 @@ r.post("/:id/interview/messages", async (c) => {
   const course = await getOwnedCourse(database, c.req.param("id"), c.get("userId"));
   if (!course) throw notFound("Course not found");
 
-  const body = z.object({ message: z.string().min(1) }).safeParse(await c.req.json().catch(() => null));
+  const body = z
+    .object({ message: z.string().min(1) })
+    .safeParse(await c.req.json().catch(() => null));
   if (!body.success) throw unprocessable("A non-empty message is required", body.error.issues);
 
   const session = await getOrCreateInterview(database, course.id);

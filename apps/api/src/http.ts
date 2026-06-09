@@ -14,5 +14,4 @@ export const notFound = (msg = "Not found") => new HttpError(404, "NOT_FOUND", m
 export const conflict = (code: string, msg: string) => new HttpError(409, code, msg);
 export const unprocessable = (msg: string, details?: unknown) =>
   new HttpError(422, "VALIDATION_FAILED", msg, details);
-export const unauthorized = (msg = "Unauthenticated") =>
-  new HttpError(401, "UNAUTHENTICATED", msg);
+export const unauthorized = (msg = "Unauthenticated") => new HttpError(401, "UNAUTHENTICATED", msg);

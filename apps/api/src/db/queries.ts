@@ -21,11 +21,7 @@ export async function getOwnedCourse(db: DB, courseId: string | undefined, userI
 }
 
 /** Latest version row for a (course, type), or undefined. */
-export async function getLatestDocument(
-  db: DB,
-  courseId: string,
-  type: string,
-) {
+export async function getLatestDocument(db: DB, courseId: string, type: string) {
   const rows = await db
     .select()
     .from(schema.documents)

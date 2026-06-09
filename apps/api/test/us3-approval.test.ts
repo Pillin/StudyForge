@@ -56,7 +56,16 @@ describe("manual edit validation (T042, FR-017a)", () => {
     const courseId = await createCourse(cookie);
     await putDoc(cookie, courseId, "course-requirements", validRequirements);
     // invalid main-plan: time blocks do not sum to total_minutes
-    const broken = { ...validMainPlan, time_distribution: [{ session_type: "standard", total_minutes: 180, blocks: [{ name: "x", activity: "y", minutes: 10 }] }] };
+    const broken = {
+      ...validMainPlan,
+      time_distribution: [
+        {
+          session_type: "standard",
+          total_minutes: 180,
+          blocks: [{ name: "x", activity: "y", minutes: 10 }],
+        },
+      ],
+    };
     const res = await putDoc(cookie, courseId, "main-plan", broken);
     const doc = (await res.json()) as { document: { status: string } };
     expect(doc.document.status).toBe("needs_review");

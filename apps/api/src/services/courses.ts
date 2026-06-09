@@ -14,11 +14,7 @@ interface StoredConfig {
   session_durations: number[];
 }
 
-export async function createCourse(
-  db: DB,
-  userId: string,
-  input: unknown,
-): Promise<CourseDTO> {
+export async function createCourse(db: DB, userId: string, input: unknown): Promise<CourseDTO> {
   const cfg = CourseConfig.parse(input);
   const now = Date.now();
   const id = crypto.randomUUID();

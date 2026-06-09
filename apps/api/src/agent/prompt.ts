@@ -35,9 +35,9 @@ export function assembleSystemPrompt(ctx: CourseContext, phaseInstructions: stri
     `- Sessions: ${ctx.sessionCount}; durations (min): ${ctx.sessionDurations.join(", ")}`,
   ].join("\n");
 
-  const governing = GOVERNING_SKILLS.map(
-    (s) => `## ${s.name}\n${s.instructions.trim()}`,
-  ).join("\n\n");
+  const governing = GOVERNING_SKILLS.map((s) => `## ${s.name}\n${s.instructions.trim()}`).join(
+    "\n\n",
+  );
 
   return [BASE, config, governing, `## Current task\n${phaseInstructions.trim()}`].join("\n\n");
 }
