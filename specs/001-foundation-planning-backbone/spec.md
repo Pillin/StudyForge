@@ -28,6 +28,10 @@ etc.) are out of scope here and added as later specs that consume the approved p
 
 - Q: When the agent regenerates a planning document the course already has, what happens? → A: Each generation creates a new versioned document; prior versions are retained and viewable.
 - Q: If a planning document fails the quality gate after the agent's revision attempts, what should happen? → A: Persist it marked "needs review" with the specific failed criteria; never silently discard or silently pass.
+- Q: What does the approval gate cover, and when is the main-plan generated? → A: The agent generates course-requirements then the main-plan from the completed requirements; a single explicit approval of both documents unlocks per-class generation.
+- Q: If an approved document is later regenerated or changed, what happens to approval? → A: It revokes approval — the course returns to "needs approval" and per-class generation is blocked until re-approved.
+- Q: How can an educator change a generated document? → A: Both — request agent-mediated revisions (natural language → regenerated version) AND directly hand-edit the document; either way a new version is created and must still pass structural validation.
+- Q: How structured is the requirements interview? → A: Standardized coverage with adaptive delivery — the agent MUST cover a defined required-topic set, asked conversationally.
 - Note (realignment 2026-06-09): this feature was previously scoped as a diagnostic-assessment generator. Per project decisions, the first slice is now the plan-then-generate backbone; initial/final evaluations are produced later by separate dedicated evaluation skills, and per-class formative assessment lives in the Kahoot + reflection of later per-class skills. Earlier diagnostic-specific clarifications (item count, item types) no longer apply to this slice.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -84,8 +88,8 @@ list.
 
 **Acceptance Scenarios**:
 
-1. **Given** an approved/complete course-requirements document, **When** the educator
-   requests the plan, **Then** a main-plan is produced with all required sections.
+1. **Given** a completed course-requirements document, **When** the educator requests the
+   plan, **Then** a main-plan is produced from it with all required sections.
 2. **Given** a generated main-plan, **When** the educator inspects it, **Then** every
    session objective uses an observable-action verb and states its Bloom level, and the
    pedagogical frameworks are applied as design structure but are not presented as content
@@ -152,6 +156,10 @@ observe incremental output.
   silently discarded and never marked as approved-ready.
 - **Premature generation attempt**: any attempt to generate per-class material before
   approval is blocked.
+- **Editing after approval**: regenerating or hand-editing an already-approved document
+  reverts the course to "needs approval" and re-blocks per-class generation.
+- **Structure-breaking manual edit**: a direct edit that violates the document's required
+  structure is rejected or saved "needs review", never stored as a valid/approvable version.
 - **Invalid/incomplete structured output**: a document that does not match its required
   structure is rejected and regenerated, not stored malformed.
 - **Language mismatch**: output not in the course's configured language fails the quality
@@ -194,9 +202,12 @@ observe incremental output.
   regenerated, not stored.
 
 **Interview → course-requirements**
-- **FR-010**: System MUST conduct a structured intake interview covering course identity,
-  time/schedule (including explicit time-distribution clarification), learning context,
-  content (mandatory/excluded topics), technology, and special sessions.
+- **FR-010**: System MUST conduct a structured intake interview that covers a defined
+  required-topic set — course identity, time/schedule (including explicit time-distribution
+  clarification), learning context, content (mandatory/excluded topics), technology, and
+  special sessions — asked adaptively/conversationally rather than as a fixed form. The
+  interview MUST NOT complete until every required topic is covered or explicitly recorded
+  as missing.
 - **FR-011**: The agent MUST NOT assume missing critical information; a vague answer MUST
   trigger a follow-up, and unresolved items MUST be recorded.
 - **FR-012**: System MUST produce a course-requirements document recording all decisions: the
@@ -213,10 +224,19 @@ observe incremental output.
   duration.
 
 **Approval gate, versioning & quality**
-- **FR-016**: System MUST require explicit educator approval of both the course-requirements
-  and the main-plan; until approved, downstream per-class generation MUST be blocked.
+- **FR-016**: System MUST generate the main-plan from the completed course-requirements, and
+  MUST require a single explicit educator approval of both documents to unlock per-class
+  generation; until approved, downstream per-class generation MUST be blocked.
+- **FR-016a**: When an approved document is subsequently regenerated or edited, the system
+  MUST revoke the course's approved/ready state and re-block per-class generation until the
+  documents are approved again.
 - **FR-017**: Regenerating a document MUST create a new version while retaining prior
   versions, which MUST remain viewable.
+- **FR-017a**: Educators MUST be able to change a document either by requesting an
+  agent-mediated revision (natural-language instructions → a regenerated version) or by
+  directly editing its content. Either path MUST create a new version and MUST validate the
+  result against the document's required structure; a manual edit that breaks the structure
+  MUST be rejected or flagged "needs review", never stored as valid.
 - **FR-018**: Generated documents MUST be checked against an explicit quality acceptance bar;
   a document that still fails after revision attempts MUST be persisted with a "needs review"
   status recording the failed criteria, never silently discarded and never marked
