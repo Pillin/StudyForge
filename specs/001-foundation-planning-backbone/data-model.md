@@ -62,6 +62,10 @@ content (validated by Zod in `packages/shared` before write). IDs are text (UUID
 **Latest version** of a (course,type) = max(version). Course readiness is derived: `ready`
 iff the latest `course_requirements` AND latest `main_plan` are both `approved`.
 
+A `course_requirements` document is **complete** when its latest version's `status` is
+`draft` or `approved` (i.e. **not** `needs_review`). `main_plan` generation requires a
+complete `course_requirements` (FR-016).
+
 ### Embedded: `PlannedSession` (inside `main_plan.content`, not a table)
 Validated array element: `{ ordinal, title, central_content, session_type, objectives:
 [{ statement, bloom_level }], notes? }`.

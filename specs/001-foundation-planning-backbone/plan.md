@@ -38,7 +38,8 @@ real Workers/D1 binding); contract tests assert request/response + tool schemas;
 **Project Type**: Web application (frontend + backend) in a pnpm monorepo.
 
 **Performance Goals**: Non-LLM API endpoints p95 < 200 ms server time. Agent generation is
-LLM-bound (seconds); responses stream incrementally via SSE so first token appears quickly.
+LLM-bound (seconds); responses stream incrementally via SSE so the first SSE token typically
+arrives in < 2 s.
 
 **Constraints**: Workers runtime has **no filesystem at runtime** → skills (SKILL.md + Zod
 schema) are **bundled at build time** and registered in a TS manifest (still: adding a skill

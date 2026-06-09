@@ -224,9 +224,10 @@ observe incremental output.
   duration.
 
 **Approval gate, versioning & quality**
-- **FR-016**: System MUST generate the main-plan from the completed course-requirements, and
-  MUST require a single explicit educator approval of both documents to unlock per-class
-  generation; until approved, downstream per-class generation MUST be blocked.
+- **FR-016**: System MUST generate the main-plan from a **complete** course-requirements
+  (latest version not in `needs_review`), and MUST require a single explicit educator
+  approval of both documents to unlock per-class generation; until approved, downstream
+  per-class generation MUST be blocked.
 - **FR-016a**: When an approved document is subsequently regenerated or edited, the system
   MUST revoke the course's approved/ready state and re-block per-class generation until the
   documents are approved again.
@@ -264,7 +265,8 @@ observe incremental output.
   set of planned **Sessions**, per-session-type time distributions, difficulty progression,
   accessibility plan, technology, and planned file list.
 - **Session (planned)**: A row in the main-plan — title, central content, objectives
-  (Bloom-labeled), session type, optional notes.
+  (Bloom-labeled), session type, optional notes. *(A planned session is the unit later
+  generated as a "class"; the terms are synonymous in this project.)*
 - **Skill (registry concept)**: A modular capability; generator skills produce documents,
   governing skills define injected standards; discoverable from a registry.
 

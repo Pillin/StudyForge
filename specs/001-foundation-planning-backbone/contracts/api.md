@@ -31,11 +31,15 @@ Sending the first message transitions the course `draft → interviewing`.
 ## Documents (US2/US3) — `:type ∈ {course-requirements, main-plan}`
 | Method | Path | Body | Response |
 |---|---|---|---|
-| POST | `/courses/:id/documents/:type/generate` | `{ guidance? }` | **SSE stream**; persists a new version; `course_requirements` must exist+complete before `main_plan` (FR-016) |
+| POST | `/courses/:id/documents/:type/generate` | `{ guidance? }` | **SSE stream**; persists a new version; `main_plan` requires a complete `course_requirements` (latest status ∈ {draft, approved}) — FR-016 |
 | GET | `/courses/:id/documents/:type` | — | `200 { document }` (latest version) |
 | GET | `/courses/:id/documents/:type/versions` | — | `200 { versions[] }` (metadata) |
 | GET | `/courses/:id/documents/:type/versions/:v` | — | `200 { document }` |
 | PUT | `/courses/:id/documents/:type` | `{ content }` | manual edit → new version; validates structure → `200 { document }` or `422` (rejected) / `200` with `needs_review` flags (FR-017a) |
+
+`course_requirements` is first produced through the interview flow (`POST
+/interview/messages` → `emit_course_requirements`). `POST /documents/:type/generate`
+**regenerates** either type and creates `main_plan`.
 
 Any successful `generate`/`PUT` on an approved doc revokes course readiness → `awaiting_approval` (FR-016a).
 
