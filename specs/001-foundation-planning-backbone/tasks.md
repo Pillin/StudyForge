@@ -56,7 +56,7 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 - [x] T015 [P] Define `AuthPort` interface in `apps/api/src/auth/port.ts` (signup/login/logout/verify → userId)
 - [x] T016 Implement D1 session-stub in `apps/api/src/auth/session.ts` (password hashing, cookie token) satisfying `AuthPort`
 - [x] T017 Add auth middleware in `apps/api/src/index.ts` (attach userId; 401 when absent) and mount `routes/auth.ts`; configure CORS allowlist for the web origin in `apps/api/src/index.ts`
-- [ ] T018 [P] Contract test auth + ownership in `apps/api/test/auth.test.ts` (login, `/auth/me`, 404 on non-owned resource)
+- [x] T018 [P] Contract test auth + ownership in `apps/api/test/auth.test.ts` (login, `/auth/me`, 404 on non-owned resource)
 
 ### Agent engine (provider seam + loop + registry)
 - [x] T019 [P] Implement OpenRouter client in `apps/api/src/agent/openrouter.ts` (OpenAI-compatible chat completions, `stream:true`, `tools`) — the ONLY provider seam
@@ -68,7 +68,7 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 ### Shared services
 - [x] T024 [P] Implement quality-gate service in `apps/api/src/services/quality.ts` (structural + language + quality-guide self-check → pass | needs_review+flags)
 - [x] T025 Implement document versioning + course readiness state machine in `apps/api/src/services/documents.ts` (new version, derive readiness, revoke-on-change) per data-model.md
-- [ ] T026 [P] Contract test the state machine in `apps/api/test/state-machine.test.ts` (approve→ready; new version→awaiting_approval; needs_review never ready)
+- [x] T026 [P] Contract test the state machine in `apps/api/test/state-machine.test.ts` (approve→ready; new version→awaiting_approval; needs_review never ready)
 
 ### Web shell
 - [ ] T027 [P] Implement API client + TanStack Query setup in `apps/web/src/lib/api.ts` + `apps/web/src/lib/query.ts`, and an SSE reader in `apps/web/src/lib/sse.ts`; incl. web→API connectivity (service binding in `apps/web/wrangler.jsonc` or `API_BASE_URL` var) and base-URL resolution in `apps/web/src/lib/api.ts`
@@ -85,7 +85,7 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 **Independent Test**: Sign in, create a course, answer the interview incl. a vague answer (expect a follow-up), finish; verify `course-requirements` covers all required topics + `missing_info[]` resolutions, in the course language.
 
 ### Tests for US1
-- [ ] T029 [P] [US1] Contract test course create + interview SSE in `apps/api/test/us1-interview.test.ts` (vague answer → follow-up; coverage completeness; requirements persisted + validated; incl. a case with inclusion/role-model toggles OFF — Principle IX off-path)
+- [x] T029 [P] [US1] Contract test course create + interview SSE in `apps/api/test/us1-interview.test.ts` (vague answer → follow-up; coverage completeness; requirements persisted + validated; incl. a case with inclusion/role-model toggles OFF — Principle IX off-path)
 
 ### Implementation for US1
 - [x] T030 [P] [US1] Author `interview` skill: `apps/api/src/skills/interview/SKILL.md` + required-topic coverage schema in `apps/api/src/skills/interview/topics.ts`
@@ -106,7 +106,7 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 **Independent Test**: From a requirements doc, generate the main-plan; verify required sections, objective verbs+Bloom, and time sums.
 
 ### Tests for US2
-- [ ] T036 [P] [US2] Contract test main-plan generation in `apps/api/test/us2-mainplan.test.ts` (ordering: requires completed requirements; time_distribution sum; objectives carry Bloom)
+- [x] T036 [P] [US2] Contract test main-plan generation in `apps/api/test/us2-mainplan.test.ts` (ordering: requires completed requirements; time_distribution sum; objectives carry Bloom)
 
 ### Implementation for US2
 - [x] T037 [P] [US2] Author `main-plan` generator skill: `apps/api/src/skills/main-plan/SKILL.md`; register as `emit_main_plan` tool (uses T009 schema)
@@ -125,8 +125,8 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 **Independent Test**: Generate both docs; attempt class generation pre-approval (blocked 409); request revision (new version); approve; confirm ready; edit → reverts to awaiting_approval.
 
 ### Tests for US3
-- [ ] T041 [P] [US3] Contract test approval + revocation + guard in `apps/api/test/us3-approval.test.ts` (409 before approve; approve→ready; edit revokes; 501 guard when ready)
-- [ ] T042 [P] [US3] Contract test manual-edit validation in `apps/api/test/us3-manual-edit.test.ts` (structure-breaking PUT → 422 or needs_review; never approved — FR-017a)
+- [x] T041 [P] [US3] Contract test approval + revocation + guard in `apps/api/test/us3-approval.test.ts` (409 before approve; approve→ready; edit revokes; 501 guard when ready)
+- [x] T042 [P] [US3] Contract test manual-edit validation in `apps/api/test/us3-manual-edit.test.ts` (structure-breaking PUT → 422 or needs_review; never approved — FR-017a)
 
 ### Implementation for US3
 - [x] T043 [US3] Implement `POST /courses/:id/approve` in `routes/documents.ts` (approve latest versions of both atomically; 409 if missing/needs_review)
@@ -145,7 +145,7 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 **Independent Test**: Produce docs, reload app, reopen a prior version; confirm intact + owner-only; observe incremental SSE; failure shows error with no partial-complete doc.
 
 ### Tests for US4
-- [ ] T047 [P] [US4] Contract test versions + ownership isolation in `apps/api/test/us4-versions.test.ts` (list versions; reopen v(n); other user gets 404)
+- [x] T047 [P] [US4] Contract test versions + ownership isolation in `apps/api/test/us4-versions.test.ts` (list versions; reopen v(n); other user gets 404)
 
 ### Implementation for US4
 - [x] T048 [US4] Implement version endpoints in `routes/documents.ts`: `GET …/versions` + `GET …/versions/:v`; and `GET /courses` list (owner-scoped)
