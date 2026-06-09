@@ -20,6 +20,15 @@ for later review. It establishes the engine (agent + modular skills + tools), th
 Course→Class→Artifact data model, the authentication boundary, and a minimal UI that all
 future skills reuse.
 
+## Clarifications
+
+### Session 2026-06-09
+
+- Q: How many questions should each diagnostic contain? → A: Configurable per generation, default 5–10 items scaled to the objectives.
+- Q: When an educator regenerates diagnostics for a course that already has them, what happens? → A: Each generation creates a new versioned artifact; prior versions are retained and viewable.
+- Q: If a diagnostic still fails the quality gate after the agent's retries, what should the system do? → A: Persist it marked "needs review" with the specific failed criteria; never silently discard or silently pass.
+- Q: What question/item types should diagnostics support in this slice? → A: Mixed — selected-response (multiple-choice / true-false) and short constructed-response, chosen to fit each objective's Bloom level.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Generate a course's diagnostic assessments (Priority: P1)
@@ -98,8 +107,9 @@ the final result is complete.
 - **Underspecified course**: subject given but no learning objectives — the agent derives
   provisional objectives and labels them as inferred rather than failing.
 - **Quality-gate failure**: a generated diagnostic fails the acceptance bar (e.g., a
-  question has no clear objective or correct answer) — it is revised or flagged, never
-  saved as if it passed.
+  question has no clear objective or correct answer) — after revision attempts it is saved
+  with a "needs review" status listing the failed criteria, never silently discarded and
+  never marked as passing.
 - **Invalid/incomplete agent output**: the agent's structured output does not satisfy the
   diagnostic format — it is rejected and regenerated, not stored malformed.
 - **Language mismatch**: the agent produces content in a language other than the course's
@@ -150,13 +160,20 @@ the final result is complete.
   diagnostic.
 - **FR-012**: Each diagnostic MUST consist of questions where every question states the
   learning objective it assesses and its Bloom cognitive level.
-- **FR-013**: Each question MUST include a clearly identified correct answer (or expected
-  response) and, where applicable, answer options.
+- **FR-013**: Each diagnostic MUST support mixed item types — selected-response
+  (multiple-choice / true-false) and short constructed-response — with the type chosen to
+  fit the assessed objective's Bloom level. Each question MUST include a clearly identified
+  correct answer (or expected response) and, for selected-response items, answer options.
 - **FR-014**: All generated diagnostic content MUST be in the course's configured content
   language.
 - **FR-015**: Generated diagnostics MUST be checked against an explicit quality acceptance
-  bar before being saved; failing diagnostics MUST be revised or flagged, never saved as
-  passing.
+  bar before being saved. A diagnostic that still fails the gate after the agent's revision
+  attempts MUST be persisted with a "needs review" status that records the specific failed
+  criteria; the system MUST NOT silently discard it and MUST NOT mark it as passing.
+- **FR-020**: Each diagnostic MUST contain a configurable number of questions, defaulting to
+  5–10 items scaled to the objectives, with the count overridable per generation.
+- **FR-021**: Regenerating diagnostics for a course MUST create a new versioned artifact
+  while retaining prior versions; educators MUST be able to view earlier versions.
 
 **Persistence & retrieval**
 - **FR-016**: System MUST persist generated diagnostics under their course and owning
@@ -182,8 +199,11 @@ the final result is complete.
   cognitive level; may be authored or agent-derived (flagged as inferred).
 - **Artifact**: A generated deliverable belonging to a course (and optionally a class).
   Attributes: type (for this slice: diagnostic-assessment), scope (initial / per-class /
-  final), title, structured content, creation time, owning educator.
-- **Diagnostic Question** (within a diagnostic artifact): stem, optional options, correct
+  final), title, structured content, creation time, owning educator, **version** (sequential
+  per course+scope, prior versions retained), **status** (passed / needs-review), and
+  **review flags** (the specific quality criteria that failed, when status is needs-review).
+- **Diagnostic Question** (within a diagnostic artifact): **item type** (selected-response or
+  short constructed-response), stem, options (for selected-response), correct
   answer/expected response, assessed objective, Bloom level.
 - **Skill (registry concept)**: A modular capability the agent can apply; generator skills
   produce artifacts, governing skills define standards. Discoverable from a registry.
@@ -223,6 +243,7 @@ the final result is complete.
   UDL are represented in the governing pedagogical-frameworks standard and applied more
   fully by later skills, but diagnostics minimally respect UDL (clear, accessible item
   wording).
-- **Default question style**: where unspecified, diagnostics mix selected-response and
-  short constructed-response items appropriate to the Bloom levels of the objectives.
+- **Item types & length** (resolved in Clarifications): diagnostics mix selected-response and
+  short constructed-response items appropriate to the Bloom levels of the objectives, with a
+  configurable count defaulting to 5–10.
 - **Connectivity**: educators have stable internet; generation is an online operation.
