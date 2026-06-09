@@ -10,13 +10,16 @@ line of code must uphold.
 
 ### I. Pedagogy-First (NON-NEGOTIABLE)
 Every generated artifact must be justifiable against an explicit pedagogical framework.
-The system treats **5E** (Engage, Explore, Explain, Elaborate, Evaluate), **Bloom's
-taxonomy** (cognitive levels for objectives and assessment), and **UDL** (Universal
-Design for Learning — multiple means of engagement, representation, action/expression)
-as first-class. Diagnostic assessment is structural, not optional: an **initial**
-diagnostic (course entry), a **per-class** diagnostic, and a **final** diagnostic
-(course exit) are always part of a complete course package. No artifact ships without
-stated learning objectives tied to a Bloom level.
+The system treats **5E** (Engage, Explore, Explain, Elaborate, Evaluate) as the **primary
+class structure**, **Bloom's** revised taxonomy as the driver of learning objectives and
+exercises, and **UDL/DUA** (multiple means of engagement, representation,
+action/expression) as a baseline; active learning and PBL apply where relevant. These
+frameworks are **internal design tools — never explained to students** in the generated
+material. No artifact ships without stated learning objectives tied to a Bloom level.
+Per-class formative assessment is built in (a consolidation quiz + a written reflection).
+**Initial and final evaluations are produced by separate, dedicated evaluation skills**
+(distinct from each other and from per-class formative assessment), not as a side effect
+of any single generator.
 
 ### II. Modular, Composable Skills (NON-NEGOTIABLE)
 Capabilities are **skills**, and skills are modular and independently extensible.
@@ -72,6 +75,23 @@ Start simple; add structure only when a spec justifies it. No speculative abstra
 no organizational-only modules, no features absent from a spec. Complexity must be
 justified against these principles in the relevant plan.
 
+### VIII. Plan-Then-Generate (Approval Gate) (NON-NEGOTIABLE)
+Course material is produced through a staged workflow, never a single shot: **interview /
+intake** (gather requirements, never assume — a vague answer triggers a follow-up) →
+**course-requirements** (the contract) → **main-plan** (the blueprint: narrative thread,
+session table, time distribution, difficulty progression, accessibility plan) →
+**explicit user APPROVAL** → **per-class generation** → **aggregation**. No class material
+is generated until the user approves the requirements and the main plan. The course's
+narrative continuity (the *hilo conductor*) and the approved plan bind every downstream
+artifact.
+
+### IX. Configurable by Default, Not Hardcoded (NON-NEGOTIABLE)
+The platform is general-purpose. Audience, age range, content language, teaching-role
+term, tone preset, citation style, slide renderer, and any inclusion/representation or
+role-model features are **per-course configuration**, never hardcoded to one audience or
+mission. Presets (e.g., a specific organization's defaults) are allowed as selectable
+configuration, but the engine and skills must function with those features off.
+
 ## Technology Constraints
 
 - **Monorepo**: pnpm workspaces. `apps/api` (backend Worker), `apps/web` (TanStack Start
@@ -85,6 +105,10 @@ justified against these principles in the relevant plan.
 - **Two Workers**: API and web deploy independently.
 - **Secrets**: `OPENROUTER_API_KEY` and provider config via `wrangler secret` / env — never
   committed.
+- **Web-native outputs**: artifacts are produced and viewed in the app. Slides are generated
+  as **Slidev-compatible Markdown** (themeable from `visual-identity`), not PowerPoint.
+  There is no `.zip` packaging and no `.pptx` rendering; per-artifact export (e.g. Markdown,
+  Slidev) may be added later via a renderer, not the engine.
 
 ## Development Workflow
 
@@ -108,4 +132,11 @@ clarification), and propagation to dependent templates and specs. `/speckit-anal
 used to verify cross-artifact consistency before implementation. Runtime development
 guidance lives alongside the active plan (referenced from `CLAUDE.md`).
 
-**Version**: 1.0.0 | **Ratified**: 2026-06-09 | **Last Amended**: 2026-06-09
+**Version**: 1.1.0 | **Ratified**: 2026-06-09 | **Last Amended**: 2026-06-09
+
+<!-- v1.1.0 (2026-06-09): Generalized from the Niñas Pro reference skill. Reframed Principle I
+(5E primary structure; frameworks are internal design tools; initial/final evaluations via
+separate skills; per-class formative = quiz + reflection). Added Principle VIII (Plan-Then-
+Generate approval-gate workflow) and Principle IX (Configurable by default). Added web-native
+output constraints (Slidev slides; no .zip/.pptx). -->
+

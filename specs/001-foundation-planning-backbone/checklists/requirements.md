@@ -1,4 +1,4 @@
-# Specification Quality Checklist: Foundation Vertical Slice — Course Authoring + Diagnostic Assessment
+# Specification Quality Checklist: Foundation Vertical Slice — Course Planning Backbone
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2026-06-09
@@ -32,7 +32,7 @@
 ## Notes
 
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
-- Validation result: **PASS** — all items satisfied on first iteration. Tech-stack choices
-  (Cloudflare Workers, OpenRouter, D1, TanStack Start, Hono) are intentionally held out of
-  the spec and recorded in the constitution's Technology Constraints; they belong in
-  `/speckit-plan`.
+- Validation result: **PASS** — all items satisfied after the 2026-06-09 realignment from
+  diagnostic-assessment to the plan-then-generate backbone. Tech-stack choices (Cloudflare
+  Workers, OpenRouter, D1, TanStack Start, Hono) are intentionally held out of the spec and
+  recorded in the constitution's Technology Constraints; they belong in `/speckit-plan`.

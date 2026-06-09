@@ -38,9 +38,10 @@ Generation is a staged process, not a single shot:
 | Inclusion / gender perspective | **optional toggle** | transversal, non-negotiable |
 | Role-model figure per class | **optional feature** | "STEAM woman" per class, required |
 | Citation style | configurable | APA 7 |
-| Slide renderer | configurable | `.pptx` (brandbook) |
+| Slide renderer | **Slidev Markdown** (web-native; no `.pptx`) | `.pptx` (brandbook) |
 | Tone preset | configurable | "empowering/warm" |
-| Initial/final evaluations | handled by a **separate evaluation skill** | same |
+| Initial/final evaluations | **produced in-app by separate `initial-evaluation` + `final-evaluation` skills** | separate skill |
+| Packaging | none (web-native; per-artifact export only) | `.zip` bundle |
 
 ## Governing skills (standards injected into generation)
 
@@ -63,16 +64,18 @@ Generation is a staged process, not a single shot:
 | `main-plan` | `main-plan.md` | the blueprint; approval artifact | Backlog |
 | `facilitation-guide` | Markdown facilitator script | course/class facilitation | Backlog |
 | `references` | formatted citation list (configurable style, default APA 7) | reliable sources only, never invented | Backlog |
-| `assessment-inputs` | `assessment-inputs.md` | **handoff to a separate evaluation skill**; objectives, key concepts, expected skills, common errors, expected difficulty, observable evidence. No quizzes/rubrics here. | Backlog |
+| `assessment-inputs` | `assessment-inputs.md` | structured per-class inputs (objectives, key concepts, expected skills, common errors, expected difficulty, observable evidence) consumed by the evaluation skills. No quizzes/rubrics here. | Backlog |
+| `initial-evaluation` | structured evaluation (course-entry) | **in-app**, distinct skill; consumes `assessment-inputs` + `main-plan`; produces items + rubric | Backlog |
+| `final-evaluation` | structured evaluation (course-exit) | **in-app**, distinct skill; separate from `initial-evaluation` | Backlog |
 | `full-glossary` | aggregated Markdown glossary | built after all class glossaries | Backlog |
-| `course-output` / packaging | generation sequence + `README` + `.zip` bundle | orchestration standard | Backlog |
+| `course-output` | generation sequence + `README` standard | orchestration standard; **no `.zip`** — artifacts live in-app, optional per-artifact export | Backlog |
 
 ## Generator skills — per class
 
 | Skill | Output / renderer | Notes | Status |
 |---|---|---|---|
 | `class-overview` | `00-class-overview.md` | the class map: purpose, prev/next bridges, objectives (Bloom-labeled), 5E mapping, key content, main activity, tech, UDL adaptations, inclusion focus, file list | Backlog |
-| `slides` | **slide deck** — script (`01-slides.md`) **+ visual artifact** | renderer configurable: **PPTX** (brandbook, default), **Slidev** (Markdown), Canva, Marp. 5E-structured (Engage hook first, never cold lecture). Consumes `visual-identity` + `tone-and-narrative`. | Backlog (renderer TBD) |
+| `slides` | **slide deck** — script + **Slidev Markdown** (themed from `visual-identity`) | 5E-structured (Engage hook first, never cold lecture). Consumes `visual-identity` + `tone-and-narrative`. No `.pptx`. Other renderers (Marp/Canva/PPTX export) are future options. | Backlog |
 | `kahoot` | Kahoot quiz-import spreadsheet (CSV/XLSX) | ≥10 questions, each with explanation, Bloom-labeled; per-class formative evaluation | Backlog |
 | `exercises` | Markdown worksheet + **formative rubric (1–10)** + mentor solutions | ≥10 items spanning ≥3 Bloom levels (warm-up/core/challenge); includes a written **reflection** item (the other half of per-class evaluation) | Backlog |
 | `glossary` | per-class term/definition data + Markdown | ≥8 terms, full structure | Backlog |
@@ -81,12 +84,14 @@ Generation is a staged process, not a single shot:
 | `preparation-checklist` | `06-preparation-checklist.md` | logistics + pedagogy prep | Backlog |
 | `quality-check` | `07-quality-check.md` | per-class verification checklist (alignment, Bloom, 5E, UDL, slides, mandatory materials) — operationalizes `quality-guide` | Backlog |
 
-## Out of scope for THIS skill (separate, referenced)
+## Evaluations (in-app, as distinct skills)
 
-- **Evaluation skill** — generates **initial / final evaluations**, quizzes, and rubrics from
-  `assessment-inputs.md`. This is where the user's original "Diagnostic Assessment (initial,
-  final)" actually lives. The course-authoring app produces the *inputs*; the evaluation
-  skill produces the *assessments*. (Per-class assessment = Kahoot + reflection, built in.)
+The platform **does** produce initial and final evaluations — the user's original
+"Diagnostic Assessment (initial, final)" — but as **separate, distinct skills**
+(`initial-evaluation`, `final-evaluation`), each consuming `assessment-inputs` + `main-plan`.
+They are distinct from each other and from per-class formative assessment (Kahoot +
+reflection, built into `kahoot` + `exercises`). They are listed under course-level
+generators above.
 
 ## Open ideas
 
@@ -97,7 +102,8 @@ Generation is a staged process, not a single shot:
   (reorganize/improve/replace), not as a script. (Was a first-class feature of the reference
   skill; revisit vs the earlier "no RAG in v1" assumption.)
 
-> Sequencing question (for realignment): the true backbone is the **interview →
-> requirements → main-plan → approval** workflow, plus the per-class generator set. The
-> current Spec 001 (foundation + diagnostic-assessment) predates this analysis and needs
-> realignment — see the realignment decision in the conversation.
+> Sequencing (decided): **Spec 001 = foundation + planning backbone** (auth + `interview` →
+> `course-requirements` → `main-plan` → approval gate; no per-class generators). Subsequent
+> specs add the per-class generator set and the evaluation skills, one at a time. `slides`
+> (Slidev) is a strong Spec 002 candidate (exercises the renderer + `visual-identity` /
+> `tone-and-narrative`).
