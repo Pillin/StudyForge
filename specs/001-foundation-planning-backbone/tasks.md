@@ -23,8 +23,8 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 
 **Purpose**: Monorepo + both Workers + shared package + tooling
 
-- [ ] T001 Create pnpm monorepo root: `package.json`, `pnpm-workspace.yaml` (apps/*, packages/*), `.gitignore` (.dev.vars, .wrangler, dist, node_modules), `tsconfig.base.json`
-- [ ] T002 [P] Scaffold `packages/shared` (TS package: `src/index.ts`, build/exports) for Zod schemas + DTOs
+- [x] T001 Create pnpm monorepo root: `package.json`, `pnpm-workspace.yaml` (apps/*, packages/*), `.gitignore` (.dev.vars, .wrangler, dist, node_modules), `tsconfig.base.json`
+- [x] T002 [P] Scaffold `packages/shared` (TS package: `src/index.ts`, build/exports) for Zod schemas + DTOs
 - [ ] T003 [P] Scaffold `apps/api` Cloudflare Worker: `apps/api/wrangler.jsonc` (D1 binding, vars), `apps/api/src/index.ts` (Hono app), `apps/api/src/env.ts` (typed Env), `apps/api/.dev.vars.example` (OPENROUTER_API_KEY, OPENROUTER_MODEL)
 - [ ] T004 [P] Scaffold `apps/web` TanStack Start Worker: `apps/web/vite.config.ts` (`@cloudflare/vite-plugin`, `viteEnvironment:{name:"ssr"}`), `apps/web/wrangler.jsonc`, app entry + root route
 - [ ] T005 [P] Configure tooling: ESLint + Prettier + root `tsconfig` references; `vitest.config.ts` with `@cloudflare/vitest-pool-workers` in `apps/api` and a plain Vitest config in `packages/shared`
@@ -41,11 +41,11 @@ not full TDD coverage — they protect the constitution's non-negotiable behavio
 **⚠️ CRITICAL**: No user-story work begins until this phase is complete
 
 ### Shared schemas (single source of truth)
-- [ ] T007 [P] Define enums + DTOs in `packages/shared/src/dto.ts` (CourseConfig, readiness states, document type/status/origin, error shape)
-- [ ] T008 [P] Define `CourseRequirementsContent` Zod schema in `packages/shared/src/schemas/course-requirements.ts` (contract sections + `missing_info[]`)
-- [ ] T009 [P] Define `MainPlanContent` Zod schema in `packages/shared/src/schemas/main-plan.ts` (description, narrative_thread, sessions[] w/ Bloom objectives, time_distribution, difficulty_progression, accessibility_plan, technology, planned_files[])
-- [ ] T010 [P] Add `zod-to-json-schema` helper in `packages/shared/src/json-schema.ts` (Zod → OpenRouter tool `parameters`)
-- [ ] T011 [P] Unit test schema validation in `packages/shared/test/schemas.test.ts` (valid/invalid fixtures; time_distribution sum rule)
+- [x] T007 [P] Define enums + DTOs in `packages/shared/src/dto.ts` (CourseConfig, readiness states, document type/status/origin, error shape)
+- [x] T008 [P] Define `CourseRequirementsContent` Zod schema in `packages/shared/src/schemas/course-requirements.ts` (contract sections + `missing_info[]`)
+- [x] T009 [P] Define `MainPlanContent` Zod schema in `packages/shared/src/schemas/main-plan.ts` (description, narrative_thread, sessions[] w/ Bloom objectives, time_distribution, difficulty_progression, accessibility_plan, technology, planned_files[])
+- [x] T010 [P] Add `zod-to-json-schema` helper in `packages/shared/src/json-schema.ts` (Zod → OpenRouter tool `parameters`)
+- [x] T011 [P] Unit test schema validation in `packages/shared/test/schemas.test.ts` (valid/invalid fixtures; time_distribution sum rule)
 
 ### Database (D1 + Drizzle)
 - [ ] T012 Define Drizzle schema in `apps/api/src/db/schema.ts` (users, sessions, courses, interview_sessions, documents) per data-model.md
